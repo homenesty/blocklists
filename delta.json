@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "additions": {
+    "adult": [],
+    "gambling": [],
+    "socialMedia": [],
+    "violence": [],
+    "drugs": [],
+    "gaming": [],
+    "streaming": []
+  },
+  "removals": {
+    "adult": [],
+    "gambling": [],
+    "socialMedia": [],
+    "violence": [],
+    "drugs": [],
+    "gaming": [],
+    "streaming": []
+  }
+}
