@@ -1,0 +1,38 @@
+name: Update Blocklist Delta
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'   # Every Monday at 02:00 UTC
+  workflow_dispatch:        # Allow manual trigger from GitHub Actions UI
+
+permissions:
+  contents: write
+
+jobs:
+  update-delta:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate delta
+        run: python generate_delta.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add delta.json
+          if git diff --cached --quiet; then
+            echo "delta.json unchanged — nothing to commit"
+          else
+            VERSION=$(python -c "import json; print(json.load(open('delta.json'))['version'])")
+            git commit -m "chore: blocklist delta v${VERSION} [skip ci]"
+            git push
+          fi
